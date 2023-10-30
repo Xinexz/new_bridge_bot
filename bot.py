@@ -1,6 +1,7 @@
 import logging
 import random
 import string
+import os
 from datetime import datetime, time, timedelta, timezone
 
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup,
@@ -17,8 +18,9 @@ logging.basicConfig(
     level=logging.INFO)
 # -----DEBUG-----
 
+token = os.environ["TOKEN"]
 updater = Updater(
-    token='##TOKEN##',
+    token=token,
     use_context=True
 )
 dispatcher = updater.dispatcher
@@ -28,7 +30,7 @@ dispatcher = updater.dispatcher
 game_data = {}
 
 # No. of players in a bridge game, SET TO 1 FOR DEBUGGING PURPOSES
-PLAYERS = 4
+PLAYERS = 1
 
 
 class BidFilter(BaseFilter):
@@ -104,7 +106,7 @@ def start(update, context):
             game_id = random_string(string_length=10)
 
         keyboard = [[InlineKeyboardButton(
-            "▶ Join game", url="https://t.me/sg_bridge_bot?start="+game_id)]]
+            "▶ Join game", url="https://t.me/new_bridge_bot?start="+game_id)]]
 
         initial_message = context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -139,7 +141,7 @@ def start(update, context):
     elif update.effective_chat.type == "private":
         if not context.args or not context.args[0] in game_data:
             keyboard = [[InlineKeyboardButton(
-                "👥 Choose a group", url="https://t.me/sg_bridge_bot?startgroup=_")]]
+                "👥 Choose a group", url="https://t.me/new_bridge_bot?startgroup=_")]]
 
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
@@ -185,7 +187,7 @@ def start(update, context):
 
             if len(game_data[game_id]["players"]) < PLAYERS:
                 keyboard = [[InlineKeyboardButton(
-                    "▶ Join game", url="https://t.me/sg_bridge_bot?start="+game_id)]]
+                    "▶ Join game", url="https://t.me/new_bridge_bot?start="+game_id)]]
 
                 context.bot.edit_message_text(
                     chat_id=game_data[game_id]["chat_id"],
