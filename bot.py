@@ -30,7 +30,7 @@ dispatcher = updater.dispatcher
 game_data = {}
 
 # No. of players in a bridge game, SET TO 1 FOR DEBUGGING PURPOSES
-PLAYERS = 1
+PLAYERS = 4
 
 
 class BidFilter(BaseFilter):
